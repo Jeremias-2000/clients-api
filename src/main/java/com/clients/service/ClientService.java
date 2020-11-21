@@ -6,6 +6,8 @@ import com.clients.repository.ClientRepository;
 import javassist.NotFoundException;
 import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.InternalServerErrorException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -26,7 +30,9 @@ public class ClientService implements AbstractService<Client>{
 
     @Override
     public ResponseEntity<?> getAll() {
+
         return new ResponseEntity<>(repository.findAll(),HttpStatus.OK);
+
     }
 
     @Override
@@ -34,6 +40,7 @@ public class ClientService implements AbstractService<Client>{
         try {
             Client search = repository.findById(id).orElseThrow(()
                     ->new NotFoundException("Id inválido: " + id));
+
             return new ResponseEntity<>(search,HttpStatus.OK);
         }catch (NotFoundException exception){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -74,9 +81,12 @@ public class ClientService implements AbstractService<Client>{
         try {
             Client search = repository.findById(id).orElseThrow(()
                     ->new NotFoundException("Id inválido: " + id));
+            repository.delete(search);
             return new ResponseEntity<>(search,HttpStatus.OK);
         }catch(InternalServerErrorException e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }
