@@ -3,11 +3,15 @@ package com.clients.controller;
 import com.clients.entity.Client;
 import com.clients.service.ClientService;
 import javassist.NotFoundException;
+import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.InternalServerErrorException;
 
 
 @RestController
@@ -29,22 +33,39 @@ public class ClientController implements AbstractController{
 
     @Override
     public ResponseEntity<?> getClientById(Long id) throws NotFoundException {
-        return new ResponseEntity<>(service.getId(id),HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(service.getId(id),HttpStatus.OK);
+        }catch (NotFoundException exception){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override
     public ResponseEntity<?> saveClient(Client client) {
-        return service.saveClient(client);
+        try {
+            return new ResponseEntity<>(service.saveClient(client),HttpStatus.CREATED);
+        }catch (DataException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override
     public ResponseEntity<?> updateClient(Long id, Client client) throws NotFoundException {
-        return service.updateClient(id, client);
+        try {
+            return new ResponseEntity<>(service.updateClient(id, client),HttpStatus.OK);
+        }catch (BadRequestException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override
     public ResponseEntity<?> deleteById(Long id) throws NotFoundException {
-        return service.deleteClient(id);
+        try {
+            service.deleteClient(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(InternalServerErrorException e){
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
