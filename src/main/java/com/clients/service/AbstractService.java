@@ -5,10 +5,11 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+
 public interface AbstractService<T> {
-    ResponseEntity<?> getAll();
-    ResponseEntity<?> getId(Long id) throws NotFoundException;
-    ResponseEntity<?> saveClient(T client);
-    ResponseEntity<?> updateClient(Long id,T client) throws NotFoundException;
-    ResponseEntity<?> deleteClient(Long id) throws NotFoundException;
+    List<T> getAll();
+    T getId(Long id) throws NotFoundException;
+    T saveClient(T client);
+    T updateClient(Long id,T client) throws NotFoundException;
+    void deleteClient(Long id) throws NotFoundException;
 }

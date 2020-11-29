@@ -1,6 +1,8 @@
 package com.clients.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,13 +12,14 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+
 @Data
 @Table(name = "Users")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Client extends RepresentationModel {
+public class Client extends RepresentationModel<Client> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
