@@ -11,7 +11,7 @@ import java.util.List;
 public interface AbstractController {
 
     @GetMapping(value = "/getAll",produces= "application/json")
-    ResponseEntity<?> getAllClients();
+    ResponseEntity<?> getAllClients() throws NotFoundException;
 
     @GetMapping(value = "/search/{id}" ,produces= "application/json")
     ResponseEntity<?> getClientById(@PathVariable("id") Long id) throws NotFoundException;

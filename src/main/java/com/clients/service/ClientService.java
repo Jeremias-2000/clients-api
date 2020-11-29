@@ -1,14 +1,13 @@
 package com.clients.service;
 
+
 import com.clients.entity.Client;
 
 import com.clients.repository.ClientRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 
 import java.util.List;
 
@@ -44,11 +43,14 @@ public class ClientService implements AbstractService<Client>{
 
     @Override
     public Client saveClient( Client client) {
-     return repository.save(client);
+        System.out.println("Saved customer !");
+        return repository.save(client);
+
     }
 
     @Override
-    public Client updateClient(Long id,@Valid @RequestBody Client client) throws NotFoundException {
+    public Client updateClient(Long id, Client client) throws NotFoundException {
+
         Client search = searchId(id);
         search.setName(client.getName());
         search.setBirth(client.getBirth());
@@ -57,6 +59,7 @@ public class ClientService implements AbstractService<Client>{
         search.setContact(client.getContact());
         search.setAddress(client.getAddress());
         search.setCpf(client.getCpf());
+        System.out.println("Updated customer !");
         return search;
 
     }
@@ -65,12 +68,15 @@ public class ClientService implements AbstractService<Client>{
     public void deleteClient(Long id) throws NotFoundException {
         Client search = searchId(id);
         repository.delete(search);
+        System.out.println("Deleted customer !");
 
     }
     public Client searchId(Long id) throws NotFoundException {
         Client search = repository.findById(id).orElseThrow(()
-                ->new NotFoundException("Id inválido: " + id));
+                ->new NotFoundException("invalid id: " + id));
         return search;
     }
+
+
 
 }
