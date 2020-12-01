@@ -21,7 +21,7 @@
 * MySQL Driver
 * Maven
 * Lombok
-Recomendável o uso do Postman para vizualizar os resultados dos endpoints.
+* Recomendável o uso do Postman para vizualizar os resultados dos endpoints.
 ### Installation
 
 Para instalar esse repositorio em sua máquina voce pode cloná-lo :
